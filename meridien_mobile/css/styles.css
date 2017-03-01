@@ -1,0 +1,80 @@
+@charset "UTF-8";
+.portrait h1 {
+}
+.landscape h1 {
+}
+body {
+	background: #000;
+}
+.logo {
+	padding: 10px;
+	text-align: center;
+}
+#map div[data-role="content"] {
+	position: absolute;
+	top: 42px;
+	bottom: 42px;
+	left: 0;
+	right: 0;
+}
+
+#gMap {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+.thumbnail {
+	float: right;
+	display: block;
+	margin: 5px 0 15px 5px;
+	border: 2px #fff solid;
+	padding: 2px;
+}
+.clearboth {
+	clear: both;
+}
+.addr {
+	overflow: hidden;
+	position:relative;
+}
+h2 {
+	margin-top: 0;
+}
+.details {
+	display: block;
+	margin: 10px 0;
+}
+div[data-role="controlgroup"] {
+	clear:both;
+	text-align: center;
+}
+div[data-role="content"] {
+	padding-bottom: 40px;
+}
+#loading {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color:rgba(0,0,0,.9);
+	z-index:9999;
+}
+.errorMsg {
+	position: absolute;
+	top: 0;
+	left: 10px;
+	z-index:9999;
+	padding: 5px;
+	background-color: rgba(0,0,0,.7);
+	display: none;
+}
+/* Uncomment this before compiling in order to cause the initial page to fade in
+@media only screen and (max-width: 800px) {
+	#page1 {
+		display: none;
+	}
+}
+*/

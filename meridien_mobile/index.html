@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=deviceWidth; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;"/>
+<title>Meridien 24/7</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="css/styles.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="js/jquery.mobile-1.0a2.min.css" />
+<script src="js/jquery-1.4.4.min.js"></script>
+<script src="js/jquery.mobile-1.0a2.min.js"></script>
+<script src="js/phonegap.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script>
+$(function () {	
+	var map = null;
+	var destMarker = null;
+	var lat = 37.771829;
+	var lng = -122.401681;
+	var latlng;
+	var cPosition = navigator.geolocation.getCurrentPosition(geoSuccess, geoFail, {timeout:3000, enableHighAccuracy:true});
+	
+	function geoSuccess (pos) {
+		lat = pos.coords.latitude;
+		lng = pos.coords.longitude;
+		latlng = new google.maps.LatLng(lat,lng);
+	}
+	
+	function geoFail () { 
+		latlng = new google.maps.LatLng(lat,lng); // Default location is San Francisco
+		$('.errorMsg').css('display', 'block');
+		$('#gMap').css('background-image', 'url(img/fakeMap.jpg)');
+	}
+			
+	function makeMap () {
+		if (map == null) {
+			latlng = new google.maps.LatLng(lat,lng);	
+			var options = { zoom: 16, center: latlng, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+			map = new google.maps.Map(document.getElementById('gMap'), options);	
+			uRHere = new google.maps.Marker({ position: latlng, map: map, title: 'You are here' });
+		}
+	}
+		
+	$('.mapIt').click(function () {		
+		makeMap();
+		var dest = null;
+		var category = $(this).closest('div[data-role="page"][id]').attr('id');
+		var restName = $(this).parent('div').siblings('h2').text();
+		switch (category) {
+			case 'asian':
+				dest = new google.maps.LatLng(lat + 0.002, lng + 0.002);
+				break;
+			case 'bbq':
+				dest = new google.maps.LatLng(lat + 0.001, lng - 0.002);
+				break;
+			case 'italian':
+				dest = new google.maps.LatLng(lat + 0.003, lng + 0.0015);
+				break;
+			case 'mexican':
+				dest = new google.maps.LatLng(lat - 0.002, lng - 0.002);
+				break;
+			case 'veggie':
+				dest = new google.maps.LatLng(lat - 0.001, lng - 0.003);
+				break;
+		}
+		if (destMarker == null) {
+			destMarker = new google.maps.Marker({ position: dest, map: map, icon: 'img/fork.png', title: restName }); 
+		} else {
+			destMarker.setPosition(dest);
+			destMarker.setTitle(restName);
+		}
+		$('#map h1').text(restName);
+	});
+	
+	$('body > *').css({minHeight: window.innerHeight + 'px !important'});
+	
+	document.addEventListener('deviceready', doDeviceReady, false);
+	
+	function doDeviceReady () {
+		// The following tells the app to fade #page1 in after the splash screen
+		$('#page1').fadeIn(5000);
+	}
+});
+</script>
+
+</head>
+<body>
+<div data-role="page" id="page1" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="logo"><img src="img/logo.png"></div>
+    <ul data-role="listview" data-inset="true">
+      <li><a href="#asian">Asian</a></li>
+      <li><a href="#bbq">BBQ</a> </li>
+      <li><a href="#italian">Italian</a> </li>
+      <li><a href="#mexican">Mexican</a></li>
+      <li><a href="#veggie">Vegetarian</a></li>
+    </ul>
+  </div>
+  
+</div>
+<div data-role="page" id="asian" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="addr"><img src="img/homeThumb_one_ton_ono.png" class="thumbnail" width="30%">
+      <h2>Sushi Heaven</h2>
+      <p>5229 Morning Glory Rd <span class="details">Hours: 11am - 10pm</span><span class="details">Price: $$$</span><span class="details">Web: sushiheaven.mer</span></p>
+      <div data-role="controlgroup" data-type="horizontal" ><a href="#map" data-role="button" data-inline="false" class="mapIt">Map It</a><a href="tel://4907774116" data-role="button" data-inline="false">Call</a></div>
+    </div>
+    <p class="clearboth">Forget grabbing your sushi from little boats sailing past your table on a moat. We send our signature rolls your way in baskets floating through the air, suspended by minature balloons and blimps. Go ahead, reach up and grab the roll of your choice, as if you're plucking it out of heaven itself.</p>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="bbq" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="addr"><img src="img/homeThumb_stovetop_surprise.png" class="thumbnail" width="30%">
+      <h2>Lake Wallaby BBQ</h2>
+      <p>975 Sunset Drive <span class="details">Hours: 2pm - 11pm</span><span class="details">Price: $$$$</span><span class="details">Web: wallabybbq.mer</span></p>
+      <div data-role="controlgroup" data-type="horizontal" ><a href="#map" data-role="button" data-inline="false" class="mapIt">Map It</a><a href="tel://4907774116" data-role="button" data-inline="false">Call</a></div>
+    </div>
+    <p class="clearboth"> G'day, Mate! meridien boasts the only absolutely 100% authentic Aussie barbie outside of Australia. As sure as Bob's your uncle, you won't find croc, roo or emu on this menu. It's the usual fare for fire: prawns, chicken or beef.</p>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="italian" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="addr"><img src="img/homeThumb_il_piatto.png" class="thumbnail" width="30%">
+      <h2>Il Piatto Di Pasta</h2>
+      <p>9950 Villa Road <span class="details">Hours: 10am - 9pm</span><span class="details">Price: $$</span><span class="details">Web: pastatime.mer</span></p>
+      <div data-role="controlgroup" data-type="horizontal" ><a href="#map" data-role="button" data-inline="false" class="mapIt">Map It</a><a href="tel://4907774116" data-role="button" data-inline="false">Call</a></div>
+    </div>
+    <p class="clearboth"> You can't get them to eat their vegetables. You can't get them to eat much. Chances are there is only one food your child will eat with pleasure — pasta! We're here for you.</p>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="mexican" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="addr"><img src="img/homeThumb_yum_pho_you.png" class="thumbnail" width="30%">
+      <h2>Meridien Mexican Grill</h2>
+      <p>2157 Misty Pine Ave. <span class="details">Hours: 4pm - 2am</span><span class="details">Price: $$</span><span class="details">Web: mexicangrill.mer</span></p>
+      <div data-role="controlgroup" data-type="horizontal" ><a href="#map" data-role="button" data-inline="false" class="mapIt">Map It</a><a href="tel://4907774116" data-role="button" data-inline="false">Call</a></div>
+    </div>
+    <p class="clearboth"> Urban foodies know the Meridien Mexican Grill is always a pleasant surprise. Right after the menus arrive and just before the chips and salsa, someone at your table notices. There is no grill!</p>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="veggie" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Restaurant Picks</h1>
+  </div>
+  <div data-role="content">
+    <div class="addr"><img src="img/homeThumb_small_plates.png" class="thumbnail" width="30%">
+      <h2>Uptown Sprouts</h2>
+      <p>7547 W. 3rd St. <span class="details">Hours: 10am - 9pm</span><span class="details">Price: $</span><span class="details">Web: uptownsprouts.mer</span></p>
+      <div data-role="controlgroup" data-type="horizontal" ><a href="#map" data-role="button" data-inline="false" class="mapIt">Map It</a><a href="tel://4907774116" data-role="button" data-inline="false">Call</a></div>
+    </div>
+    <p class="clearboth"> Our owner and founder proudly says, "If it had a face, this ain't the place." Yes, we are honored to serve you everything that never had a mother, a thought, or an instinct. It's all vegan, all the time.</p>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="map" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>Page Header</h1>
+  </div>
+  <div data-role="content">
+  	<p class="errorMsg">Your location could not be determined.</p>
+    <div id="gMap"></div>
+  </div>
+  <div data-role="footer" data-position="fixed">
+    <h4>Meridien 24/7</h4>
+  </div>
+</div>
+<div data-role="page" id="loader" data-theme="a">
+  <div data-role="content">
+    <div id="loading"></div>
+</div>
+</body>
+</html>
